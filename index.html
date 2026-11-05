@@ -4,65 +4,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DVMUS</title>
+<meta name="theme-color" content="#080808">
+<title>DVMUS — музыка</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#080808;color:#fff;font-family:Arial,sans-serif;font-weight:700}
-header{height:75px;border-bottom:1px solid #292929;display:flex;align-items:center;justify-content:space-between;padding:0 35px}
-.logo{font-size:30px;letter-spacing:2px}
-.profile{background:#222;border-radius:50%;padding:12px;font-size:20px}
-.layout{display:flex;min-height:calc(100vh - 75px)}
-.sidebar{width:220px;padding:35px 20px;border-right:1px solid #292929}
-.sidebar a{display:block;color:#aaa;text-decoration:none;padding:17px 12px;border-radius:10px;font-size:15px}
-.sidebar a:hover,.sidebar a.active{background:#252525;color:white}
-main{flex:1;display:flex;align-items:center;justify-content:center;padding:35px}
-.player{width:min(430px,100%);text-align:center}
-.cover{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:12px;background:#222}
-.track{font-size:25px;margin:24px 0 7px}
-.artist{color:#888;font-size:16px}
-.progress{height:4px;background:#444;border-radius:10px;margin:25px 0 10px}
-.progress span{display:block;width:35%;height:4px;background:white;border-radius:10px}
-.times{display:flex;justify-content:space-between;color:#888;font-size:12px}
-.controls{display:flex;align-items:center;justify-content:center;gap:35px;margin-top:25px}
-.controls button{background:none;color:white;border:0;font-size:28px;cursor:pointer}
-.controls .play{background:white;color:black;width:58px;height:58px;border-radius:50%;font-size:24px}
+body{margin:0;background:#080808;color:white;font-family:Arial,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+header{height:70px;border-bottom:1px solid #292929;display:flex;align-items:center;justify-content:space-between;padding:0 25px}
+.logo{font-size:28px;font-weight:900;letter-spacing:2px}
+.profile{background:#242424;border-radius:50%;padding:12px}
+.layout{display:flex;min-height:calc(100vh - 70px);padding-bottom:95px}
+.sidebar{width:190px;padding:25px 12px;border-right:1px solid #292929}
+.nav{display:block;width:100%;padding:15px 12px;margin-bottom:5px;background:none;border:0;border-radius:9px;color:#aaa;text-align:left}
+.nav.active,.nav:hover{background:#252525;color:white}
+main{flex:1;min-width:0;padding:30px}
+h1{font-size:28px}
+.sub{color:#999;font-size:14px}
+.search{display:flex;gap:10px;margin:25px 0}
+.search input{flex:1;min-width:0;background:#171717;border:1px solid #333;border-radius:10px;padding:14px;color:white}
+.search button{background:white;color:black;border:0;border-radius:10px;padding:0 20px;font-weight:bold}
+.results{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:15px}
+.song{background:#141414;padding:10px;border-radius:12px;min-width:0}
+.song img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+.song-name{font-size:14px;font-weight:bold;margin:10px 0 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.artist{font-size:12px;color:#999;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.song button{background:#252525;color:white;border:1px solid #444;border-radius:7px;padding:8px;margin-top:10px}
+.player{position:fixed;bottom:0;left:0;right:0;background:#151515;border-top:1px solid #333;display:flex;align-items:center;gap:15px;padding:12px 18px;z-index:5}
+.cover{width:52px;height:52px;object-fit:cover;border-radius:7px;background:#333}
+.info{width:180px;min-width:0}
+.track{font-size:13px;font-weight:bold;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.name{font-size:11px;color:#999;margin-top:5px}
+.controls{display:flex;align-items:center;gap:15px;margin:auto}
+.controls button{background:none;border:0;color:white;font-size:22px}
+.controls .play{background:white;color:black;border-radius:50%;width:42px;height:42px}
+.timeline{display:flex;align-items:center;gap:8px;color:#aaa;font-size:11px;flex:1;max-width:280px}
+.timeline input{width:100%;accent-color:white}
+.status{color:#999;font-size:13px;margin:15px 0}
 @media(max-width:650px){
-.sidebar{width:125px;padding:20px 8px}
-.sidebar a{font-size:12px;padding:14px 8px}
-header{padding:0 16px}
+.sidebar{width:65px;padding:15px 5px}
+.nav{font-size:0;text-align:center;padding:15px 3px}
+.nav::first-letter{font-size:19px}
 main{padding:20px 12px}
-.track{font-size:20px}
+.results{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.player{gap:8px;padding:9px}
+.info{width:105px}
+.timeline{max-width:90px}
+.controls{gap:6px}
+.controls button{font-size:17px}
+.controls .play{width:36px;height:36px}
 }
 </style>
 </head>
 <body>
+
 <header>
 <div class="logo">DVMUS.</div>
-<div class="profile">●</div>
+<div class="profile">D</div>
 </header>
+
 <div class="layout">
 <aside class="sidebar">
-<a class="active" href="#">⌂ Главная</a>
-<a href="#">⌕ Поиск</a>
-<a href="#">♡ Избранное</a>
-<a href="#">♫ Плейлисты</a>
-<a href="#">◷ История</a>
-<a href="#">⚙ Настройки</a>
+<button class="nav active" data-view="home">⌂ Главная</button>
+<button class="nav" data-view="search">⌕ Поиск</button>
+<button class="nav" data-view="favorites">♡ Избранное</button>
+<button class="nav" data-view="history">◷ История</button>
 </aside>
+
 <main>
-<div class="player">
-<img class="cover" src="https://placehold.co/600x600/171717/FFFFFF?text=DVMUS" alt="Обложка трека">
-<div class="track">Название трека</div>
-<div class="artist">Имя исполнителя</div>
-<div class="progress"><span></span></div>
-<div class="times"><span>0:00</span><span>0:00</span></div>
-<div class="controls">
-<button aria-label="Предыдущий трек">⏮</button>
-<button class="play" aria-label="Воспроизведение">▶</button>
-<button aria-label="Следующий трек">⏭</button>
-</div>
-</div>
+<h1 id="heading">Найди свою музыку</h1>
+<p class="sub">Ищи исполнителей и слушай доступные фрагменты.</p>
+
+<form class="search" id="searchForm">
+<input id="query" placeholder="Название трека или исполнитель..." autocomplete="off">
+<button type="submit">Найти</button>
+</form>
+
+<div class="status" id="status">Введи название песни или исполнителя.</div>
+<div class="results" id="results"></div>
 </main>
 </div>
+
+<div class="player">
+<img class="cover" id="cover" src="https://placehold.co/100x100/222/fff?text=DVMUS">
+<div class="info">
+<div class="track" id="track">DVMUS — выбери трек</div>
+<div class="name" id="artist">Твоя музыка</div>
+</div>
+<div class="controls">
+<button id="prev">⏮</button>
+<button class="play" id="play">▶</button>
+<button id="next">⏭</button>
+</div>
+<div class="timeline">
+<span id="elapsed">0:00</span>
+<input id="seek" type="range" min="0" max="100" value="0">
+<span id="total">0:30</span>
+</div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const audio=document.getElementById('audio');
+const results=document.getElementById('results');
+const status=document.getElementById('status');
+
+let tracks=[];
+let current=0;
+let favorites=JSON.parse(localStorage.getItem('dvmus-favorites')||'[]');
+let history=JSON.parse(localStorage.getItem('dvmus-history')||'[]');
+
+function safe(s){
+return String(s||'').replace(/[&<>"']/g,c=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[c]));
+}
+
+function clock(v){
+if(!Number.isFinite(v))return '0:00';
+return Math.floor(v/60)+':'+String(Math.floor(v%60)).padStart(2,'0');
+}
+
+async function searchMusic(term){
+if(!term.trim())return;
+
+status.textContent='Ищем музыку...';
+results.innerHTML='';
+
+try{
+const url='https://itunes.apple.com/search?term='+encodeURIComponent(term)+'&entity=song&limit=30&country=US';
+const response=await fetch(url);
+if(!response.ok)throw new Error();
+
+const data=await response.json();
+tracks=(data.results||[]).filter(t=>t.previewUrl);
+
+status.textContent=tracks.length
+?'Найдено треков: '+tracks.length
+:'Ничего не найдено. Попробуй другой запрос.';
+
+render(tracks);
+}catch(e){
+status.textContent='Ошибка поиска. Проверь интернет и попробуй ещё раз.';
+}
+}
+
+function render(list){
+results.innerHTML='';
+
+list.forEach(t=>{
+const card=document.createElement('div');
+card.className='song';
+
+const image=(t.artworkUrl100||'').replace('100x100','300x300');
+const saved=favorites.some(x=>x.trackId===t.trackId);
+
+card.innerHTML=`
+<img src="${safe(image)}" alt="Обложка">
+<div class="song-name">${safe(t.trackName)}</div>
+<div class="artist">${safe(t.artistName)}</div>
+<button class="listen">▶ Слушать</button>
+<button class="favorite">${saved?'♥':'♡'}</button>
+`;
+
+card.querySelector('.listen').onclick=()=>playTrack(t);
+card.querySelector('.favorite').onclick=()=>{
+toggleFavorite(t);
+render(list);
+};
+
+results.appendChild(card);
+});
+}
+
+function playTrack(t){
+current=tracks.findIndex(x=>x.trackId===t.trackId);
+if(current<0)current=0;
+
+audio.src=t.previewUrl;
+audio.play().catch(()=>{
+status.textContent='Не удалось запустить трек. Попробуй другой.';
+});
+
+document.getElementById('track').textContent=t.trackName;
+document.getElementById('artist').textContent=t.artistName;
+document.getElementById('cover').src=(t.artworkUrl100||'').replace('100x100','300x300');
+
+history=[t,...history.filter(x=>x.trackId!==t.trackId)].slice(0,40);
+localStorage.setItem('dvmus-history',JSON.stringify(history));
+}
+
+function toggleFavorite(t){
+const exists=favorites.some(x=>x.trackId===t.trackId);
+favorites=exists
+?favorites.filter(x=>x.trackId!==t.trackId)
+:[t,...favorites];
+
+localStorage.setItem('dvmus-favorites',JSON.stringify(favorites));
+}
+
+function move(step){
+if(!tracks.length)return;
+current=(current+step+tracks.length)%tracks.length;
+playTrack(tracks[current]);
+}
+
+document.getElementById('searchForm').onsubmit=e=>{
+e.preventDefault();
+searchMusic(document.getElementById('query').value);
+};
+
+document.getElementById('play').onclick=()=>{
+if(!audio.src)return;
+if(audio.paused)audio.play();
+else audio.pause();
+};
+
+audio.onplay=()=>document.getElementById('play').textContent='Ⅱ';
+audio.onpause=()=>document.getElementById('play').textContent='▶';
+audio.onended=()=>move(1);
+
+document.getElementById('prev').onclick=()=>move(-1);
+document.getElementById('next').onclick=()=>move(1);
+
+audio.ontimeupdate=()=>{
+document.getElementById('seek').value=
+audio.duration?audio.currentTime/audio.duration*100:0;
+
+document.getElementById('elapsed').textContent=clock(audio.currentTime);
+document.getElementById('total').textContent=clock(audio.duration);
+};
+
+document.getElementById('seek').oninput=e=>{
+if(audio.duration)audio.currentTime=e.target.value/100*audio.duration;
+};
+
+document.querySelectorAll('.nav').forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+btn.classList.add('active');
+
+const view=btn.dataset.view;
+
+if(view==='favorites'){
+document.getElementById('heading').textContent='Избранное';
+render(favorites);
+status.textContent='Твои сохранённые треки.';
+}
+else if(view==='history'){
+document.getElementById('heading').textContent='История';
+render(history);
+status.textContent='Недавно выбранные треки.';
+}
+else{
+document.getElementById('heading').textContent=
+view==='search'?'Поиск музыки':'Найди свою музыку';
+}
+};
+});
+</script>
 </body>
 </html>
